@@ -16,7 +16,7 @@ Inclua no começo de cada página com:
     <#-- Injeta ícones do Bootstrap -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.13.1/font/bootstrap-icons.min.css">
     <#-- Injeta as folhas de estilo CSS do template -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <title>SpringPad</title>
 </head>
 
@@ -39,16 +39,16 @@ Inclua no começo de cada página com:
             <ul class="navbar-nav me-auto ps-3 ps-md-0">
                 <hr class="border-top mb-0 border-white">
                 <li class="nav-item"><a class="nav-link" href="/">Início</a></li>
-                <li class="nav-item"><a class="nav-link" href="/novo">Novo</a></li>
+                <li class="nav-item"><a class="nav-link" href="/pad/novo">Novo</a></li>
 
                 <#-- Menu dropdown em "Sobre" -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#Sobre" role="button" data-bs-toggle="dropdown">Sobre...</a>
                     <ul class="dropdown-menu mb-2">
-                        <li><a class="dropdown-item" href="/sobre">Sobre o Site</a></li>
-                        <li><a class="dropdown-item" href="/quemsomos">Quem somos</a></li>
-                        <li><a class="dropdown-item" href="/privacidade">Privacidade</a></li>
-                        <li><a class="dropdown-item" href="/contatos">Faça Contato</a></li>
+                        <li><a class="dropdown-item" href="/sobre/site">Sobre o Site</a></li>
+                        <li><a class="dropdown-item" href="/sobre/quemsomos">Quem somos</a></li>
+                        <li><a class="dropdown-item" href="/sobre/privacidade">Privacidade</a></li>
+                        <li><a class="dropdown-item" href="/sobre/contatos">Faça Contato</a></li>
                     </ul>
                 </li>
 
@@ -60,7 +60,7 @@ Inclua no começo de cada página com:
                 <ul class="navbar-nav ps-3 ps-md-0 mb-1">
                     <li class="nav-item">
                         <a class="nav-link" href="/login" id="userLoginOut">
-                            <img src="img/user.png" alt="Logue-se com o Google" class="rounded-circle mx-1">
+                            <img src="/img/user.png" alt="Logue-se com o Google" class="rounded-circle mx-1">
                             <span>Login</span>
                         </a>
                     </li>
