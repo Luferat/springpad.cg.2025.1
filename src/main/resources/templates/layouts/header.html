@@ -1,47 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 
+<#--
+src/main/resources/templates/layouts/header.html
+Parte superior do template do site.
+Inclua no começo de cada página com:
+    <#include "layouts/header.html">
+-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Injeta Bootstrap CSS -->
+    <#-- Injeta Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css">
-    <!-- Injeta ícones do Bootstrap -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.13.1/font/bootstrap-icons.min.css">
-    <style>
-        #userLoginOut img {
-          width: 2rem;
-          height: 2rem;
-        }
-
-        .footer-links ul {
-          list-style: none;
-          padding-left: 1rem;
-          line-height: 1.5;
-        }
-
-        footer a {
-          color: var(--bs-light);
-          text-decoration: none;
-        }
-
-        footer a:hover {
-          color: var(--bs-warning);
-          text-decoration: none;
-        }
-
-        .footer-links a {
-          display: flex;
-          align-items: center;
-        }
-
-        .footer-links i {
-          font-size: 1.5rem;
-          margin-right: .5rem;
-        }
-    </style>
+    <#-- Injeta ícones do Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.13.1/font/bootstrap-icons.min.css">
+    <#-- Injeta as folhas de estilo CSS do template -->
+    <link rel="stylesheet" href="css/style.css">
     <title>SpringPad</title>
 </head>
 
@@ -50,30 +25,30 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
     <div class="container">
 
-        <!-- Logotipo -->
-        <a class="navbar-brand" href="javascript:void(0)">Spring<i class="bi bi-file-earmark-text text-warning"></i>Pad</a>
+        <#-- Logotipo -->
+        <a class="navbar-brand" href="/">Spring<i class="bi bi-file-earmark-text text-warning"></i>Pad</a>
 
-        <!-- Botão do menu em telas pequenas -->
+        <#-- Botão do menu em telas pequenas -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Menu principal -->
+        <#-- Menu principal -->
         <div class="collapse navbar-collapse" id="mynavbar">
 
             <ul class="navbar-nav me-auto ps-3 ps-md-0">
                 <hr class="border-top mb-0 border-white">
-                <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Início</a></li>
-                <li class="nav-item"><a class="nav-link" href="javascript:void(0)">Novo</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Início</a></li>
+                <li class="nav-item"><a class="nav-link" href="/novo">Novo</a></li>
 
-                <!-- Menu dropdown em "Sobre" -->
+                <#-- Menu dropdown em "Sobre" -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Sobre...</a>
+                    <a class="nav-link dropdown-toggle" href="#Sobre" role="button" data-bs-toggle="dropdown">Sobre...</a>
                     <ul class="dropdown-menu mb-2">
-                        <li><a class="dropdown-item" href="#">Sobre o Site</a></li>
-                        <li><a class="dropdown-item" href="#">Quem somos</a></li>
-                        <li><a class="dropdown-item" href="#">Privacidade</a></li>
-                        <li><a class="dropdown-item" href="#">Faça Contato</a></li>
+                        <li><a class="dropdown-item" href="/sobre">Sobre o Site</a></li>
+                        <li><a class="dropdown-item" href="/quemsomos">Quem somos</a></li>
+                        <li><a class="dropdown-item" href="/privacidade">Privacidade</a></li>
+                        <li><a class="dropdown-item" href="/contatos">Faça Contato</a></li>
                     </ul>
                 </li>
 
@@ -81,21 +56,21 @@
 
             <div class="d-flex flex-column flex-md-row-reverse">
 
-                <!-- Autenticação de usuário -->
+                <#-- Autenticação de usuário -->
                 <ul class="navbar-nav ps-3 ps-md-0 mb-1">
                     <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)" id="userLoginOut">
-                            <img src="user.png" alt="Logue-se com o Google" class="rounded-circle mx-1">
+                        <a class="nav-link" href="/login" id="userLoginOut">
+                            <img src="img/user.png" alt="Logue-se com o Google" class="rounded-circle mx-1">
                             <span>Login</span>
                         </a>
                     </li>
                 </ul>
 
-                <!-- Formulário de pesquisa -->
+                <#-- Formulário de pesquisa -->
                 <form class="d-flex p-1">
                     <div class="input-group">
                         <input class="form-control" type="text" placeholder="Procurar...">
-                        <button class="btn btn-primary" type="button">Ok</button>
+                        <button class="btn btn-light" type="button"><i class="bi bi-search"></i></button>
                     </div>
                 </form>
 
@@ -106,5 +81,5 @@
 <a></a>
 <main class="container flex-grow-1">
 
-    <!-- Rack para funcionar o #top -->
+    <#-- Rack para funcionar o #top -->
     <div id="top" style="position: relative; height: 4.5rem;"></div>

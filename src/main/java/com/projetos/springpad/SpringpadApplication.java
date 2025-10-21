@@ -1,3 +1,7 @@
+/**
+ * com.projetos.springpad.SpringpadApplication
+ * Classe raiz do aplicativo, contendo o método `main()`.
+ */
 package com.projetos.springpad;
 
 import org.springframework.boot.SpringApplication;

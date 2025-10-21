@@ -1,0 +1,35 @@
+/**
+ * src/main/resources/static/css/style.css
+ * Folhas de estilo do template do site.
+ */
+
+#userLoginOut img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding-left: 1rem;
+  line-height: 1.5;
+}
+
+footer a {
+  color: var(--bs-light);
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--bs-warning);
+  text-decoration: none;
+}
+
+.footer-links a {
+  display: flex;
+  align-items: center;
+}
+
+.footer-links i {
+  font-size: 1.5rem;
+  margin-right: .5rem;
+}
