@@ -151,7 +151,7 @@ const updateUI = (user) => {
         // Usuário DESLOGADO: Mostra a imagem padrão
 
         // Cria o elemento <img> (ícone)
-        const icon = `<img src="img/user.png" alt="Logue-se com o Google" class="rounded-circle avatar-sm">`;
+        const icon = `<img src="/img/user.png" alt="Logue-se com o Google" class="rounded-circle avatar-sm">`;
 
         // Cria o elemento <span>
         const loginSpan = `<span class="ms-2">Login</span>`;
