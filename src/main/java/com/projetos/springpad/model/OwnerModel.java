@@ -7,12 +7,13 @@ package com.projetos.springpad.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Table(name = "owners")
-public class Owner {
+public class OwnerModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +25,16 @@ public class Owner {
     private LocalDateTime createdAt;
     private LocalDateTime lastLoginAt;
     private String displayName;
+
+    @Column(unique = true)
     private String email;
     private String photoURL;
 
     @Enumerated(EnumType.STRING)
+    @Column(
+            // Garante que o H2 inclua o DEFAULT 'ON' na instrução CREATE TABLE
+            columnDefinition = "VARCHAR(3) DEFAULT 'ON'"
+    )
     private Status status = Status.ON;
 
     @Column(columnDefinition = "TEXT")
