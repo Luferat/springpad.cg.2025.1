@@ -1,5 +1,4 @@
 /**
- * src/main/resources/static/js/script.js
  * JavaScript do layout.
  * Template com autenticação de usuário pelo Google.
  * Referências desta página: https://firebase.google.com/docs/build?hl=pt-br
@@ -8,9 +7,10 @@
 /**
  * Configuração: ação ao clicar no usuário logado:
  *  - Se vazio (''), faz logout do usuário
- *  - Se tem uma rota (Ex.: '/profile'), acessa
+ *  - Se tem uma URL (Ex.: '/profile'), acessa
  */
 const loggedUserAction = '';
+// const loggedUserAction = '/profile';
 
 /**
  * Configuração: ID do elemento que contém o avatar do usuário.
@@ -23,34 +23,37 @@ const userClickId = 'userLoginOut';
  * Rota da API/Backend que recebe o JSON com os dados do usuário quando o perfil é atualizado.
  * - Use um endpoint completo ou somente a rota. Ex.:
  *     - Endpoint completo → https://minhaapi.com/user/login
- *     - Somente a rota → /login
+ *     - Somente a rota → /user/login ← Se o front-end está no mesmo domínio.
  *   DICA! Quando implementar seu back-end, não esqueça de implementar o endpoint abaixo usando o método POST.
  * - Se vazio (""), não envia os dados para a API/backend;
  * - Se "firebase", faz a persistência no projeto atual do Firebase Firestore, na coleção `Users`;
  */
-// const apiLoginEndpoint = 'firebase';
-// const apiLoginEndpoint = '/owner/login';
-const apiLoginEndpoint = '';
+const apiLoginEndpoint = 'firebase';
+// const apiLoginEndpoint = '/owner/login'; // Exemplo
+// const apiLoginEndpoint = '';
 
-// Notifica o backend para deletar o cookie de sessão seguro
-// const apiLogoutEndpoint = '/owner/logout';
+/**
+ * Configuração: rota de logout
+ * Rota da API/Backend que recebe a requisição de logout do usuário quando ele sai do front-end.
+ * Por exemplo, notifica o backend para deletar o cookie de sessão seguro (JWT).
+ * - Use um endpoint completo ou somente a rota. Ex.:
+ *     - Endpoint completo → https://minhaapi.com/user/logout
+ *     - Somente a rota → /user/logout ← Se o front-end está no mesmo domínio.
+ * - Se vazio (""), não envia os dados para a API/backend;
+ */
+// const apiLogoutEndpoint = '/user/logout'; // Exemplo
 const apiLogoutEndpoint = '';
 
 /**
- * Configuração: configuração do Projeto Firebase.
- * Altere essas configurações conforme seu projeto no Firebase.com
- *  - Entre no console do projeto no Firebase
- *  - Clique na engrenagem
- *  - Copie os dados do projeto nas chaves abaixo
+ * Configuração: mostra logs das ações no console
+ *  - Se true, mostra logs
+ *  - Se false, oculta logs
  */
-const firebaseConfig = {
-  apiKey: "AIzaSyD2KkOlBLAIhMM8JRjLI3V0t9A07WmyAYo",
-  authDomain: "padcoisas-32486.firebaseapp.com",
-  projectId: "padcoisas-32486",
-  storageBucket: "padcoisas-32486.firebasestorage.app",
-  messagingSenderId: "659362551657",
-  appId: "1:659362551657:web:8bf9f2ef66ef5b858d4ff8"
-};
+const showLogs = false;
+
+/**************************************************************************
+ * Não altere nada à partir daqui a não ser que saiba o que está fazendo! *
+ **************************************************************************/
 
 // Inicializa o Firebase e o Authentication
 const app = firebase.initializeApp(firebaseConfig);
@@ -59,16 +62,22 @@ const auth = app.auth();
 // Referência ao elemento HTML clicável
 const userInOut = document.getElementById(userClickId);
 
-// Função para Login com Google (Popup)
+// Adicione a class "is-logged" aos elementos da página que só são visíveis quando o usuário está logado.
+const isLogged = document.querySelectorAll('.is-logged');
+
+// Adicione a class "not-is-logged" aos elementos da página que só são visíveis quando não tem usuário logado.
+const notIsLogged = document.querySelectorAll('.not-is-logged');
+
+// Função para Login com Google usando Popup
 const googleLogin = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     try {
         // Abre o popup do Google para login
         await auth.signInWithPopup(provider);
-        console.log('Login com Google bem-sucedido!');
-        // O estado de autenticação será atualizado pelo listener onAuthStateChanged
+        showLogs ? console.log('Login com Google bem-sucedido!') : null;
+        // O estado de autenticação será atualizado pelo listener onAuthStateChanged abaixo
     } catch (error) {
-        console.error("Erro no login com Google:", error);
+        showLogs ? console.error("Erro no login com Google:", error) : null;
         alert('Erro ao fazer login. Verifique o console para mais detalhes.');
     }
 };
@@ -76,34 +85,39 @@ const googleLogin = async () => {
 // Função para Logout
 const googleLogout = async () => {
     try {
-        // Limpa o estado no Firebase Authentication (lado do cliente)
+        // Limpa o estado no Firebase Authentication (do lado do cliente)
         await auth.signOut();
 
+        // Se configurou um endpoint de logout
         if (apiLogoutEndpoint != "") {
 
-            const response = await fetch(apiLogoutEndpoint, {method: 'POST',});
+            const response = await fetch(apiLogoutEndpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: "logout" })
+            });
 
             if (response.ok) {
-                console.log('Logout bem-sucedido e cookie de sessão removido!');
-                // Redireciona após logout bem-sucedido para a home
+                showLogs ? console.log('Logout bem-sucedido e cookie de sessão removido!') : null;
+                // Após logout bem-sucedido, redireciona para a home
                 window.location.href = '/home';
             } else {
-                console.error('Erro ao notificar o backend sobre o logout.');
+                showLogs ? console.error('Erro ao notificar o backend sobre o logout.') : null;
             }
         }
 
     } catch (error) {
-        console.error("Erro no logout:", error);
-        // Não use alert(), use uma modal customizada
-        // alert('Erro ao fazer logout. Verifique o console para mais detalhes.');
+        showLogs ? console.error("Erro no logout:", error) : null;
+        alert('Erro ao fazer logout. Verifique o console para mais detalhes.');
     }
 };
 
 // Função de Manipulação de Clique (Login/Página de Perfil)
 const handleUserInOutClick = (event) => {
-    // Evita que o <a> navegue imediatamente, pois vamos gerenciar isso no JS
+    // Evita que o <a> navegue imediatamente, pois vamos gerenciar isso no JavaScript
     event.preventDefault();
 
+    // Obtém status do usuário
     const user = auth.currentUser;
 
     if (user) {
@@ -128,13 +142,13 @@ const updateUI = (user) => {
     if (user) {
         // Usuário LOGADO: Mostra o Avatar
 
-        // Cria o elemento <img> com o avatar
+        // Atualiza o elemento <img> com o avatar do usuário (photoURL)
         const avatarImg = `<img src="${user.photoURL || 'img/user.png'}" alt="${user.displayName || 'Avatar do Usuário'}" class="rounded-circle avatar-sm" referrerpolicy="no-referrer">`;
 
-        // Cria o elemento <span>
-        const loginSpan = `<span class="ms-2">${user.displayName || 'Usuário logado'}</span>`;
+        // Atualiza o elemento <span> com nome do usuário (displayName)
+        const loginSpan = `<span class="d-md-none ms-3">${user.displayName || 'Usuário logado'}</span>`;
 
-        // Adiciona o avatar do usuário ao link
+        // Atualiza os dados do usuário no link
         userInOut.innerHTML = avatarImg + loginSpan;
 
         // Atualiza o link para a página de perfil
@@ -147,14 +161,26 @@ const updateUI = (user) => {
             userInOut.title = `Ver perfil de ${user.displayName}`;
         }
 
+        // Mostra elementos quando usuário ESTÁ logado
+        isLogged.forEach(element => {
+            element.classList.remove('d-none');
+            element.classList.add('d-block');
+        });
+
+        // Oculta elementos quando usuário ESTÁ logado
+        notIsLogged.forEach(element => {
+            element.classList.remove('d-block');
+            element.classList.add('d-none');
+        });
+
     } else {
         // Usuário DESLOGADO: Mostra a imagem padrão
 
         // Cria o elemento <img> (ícone)
-        const icon = `<img src="/img/user.png" alt="Logue-se com o Google" class="rounded-circle avatar-sm">`;
+        const icon = `<img src="img/user.png" alt="Logue-se com o Google" class="rounded-circle avatar-sm">`;
 
         // Cria o elemento <span>
-        const loginSpan = `<span class="ms-2">Login</span>`;
+        const loginSpan = `<span class="d-md-none ms-3">Login com Google</span>`;
 
         // Adiciona o ícone ao avatar usuário
         userInOut.innerHTML = icon + loginSpan;
@@ -162,6 +188,18 @@ const updateUI = (user) => {
         // Atualiza o link para o login (embora o JS trate o clique)
         userInOut.href = '/login';
         userInOut.title = `Fazer login usando o Google`;
+
+        // Oculta elementos quando usuário NÃO logado
+        isLogged.forEach(element => {
+            element.classList.remove('d-block');
+            element.classList.add('d-none');
+        });
+
+        // Mostra elementos quando usuário NÃO logado
+        notIsLogged.forEach(element => {
+            element.classList.remove('d-none');
+            element.classList.add('d-block');
+        });
     }
 };
 
@@ -178,8 +216,9 @@ const sendUserToBackend = async (user) => {
             displayName: user.displayName,
             email: user.email,
             photoURL: user.photoURL,
-            createdAt: user.metadata.creationTime ? new Date(user.metadata.creationTime).getTime() : Date.now(),
-            lastLoginAt: Date.now()
+            // Converte as datas para UTC/ISO ao enviar para o backend
+            createdAt: timestampToISO(user.metadata.creationTime),
+            lastLoginAt: timestampToISO(user.metadata.lastLoginAt),
         };
 
         // A rota da API recebe os dados do usuário logado via JSON e POST e faz persistência
@@ -193,12 +232,12 @@ const sendUserToBackend = async (user) => {
         });
 
         if (response.ok) {
-            console.log('Dados do usuário enviados com sucesso para o backend');
+            showLogs ? console.log('Dados do usuário enviados com sucesso para o backend') : null;
         } else {
-            console.log('Erro ao enviar dados para o backend');
+            showLogs ? console.log('Erro ao enviar dados para o backend') : null;
         }
     } catch (error) {
-        console.error('Erro ao enviar dados:', error);
+        showLogs ? console.error('Erro ao enviar dados:', error) : null;
     }
 };
 
@@ -210,7 +249,7 @@ const sendUserToFirestore = async (user) => {
     try {
         // Se a biblioteca Firestore não estiver carregada mostra erro
         if (typeof firebase.firestore !== 'function') {
-            console.error("Firestore não está inicializado. Certifique-se de que a biblioteca Firestore (ex: firebase-firestore.js) foi carregada.");
+            showLogs ? console.error("Firestore não está inicializado. Certifique-se de que a biblioteca Firestore (ex: firebase-firestore.js) foi carregada.") : null;
             return;
         }
 
@@ -226,10 +265,9 @@ const sendUserToFirestore = async (user) => {
             displayName: user.displayName || null,
             email: user.email || null,
             photoURL: user.photoURL || null,
-            // O 'createdAt' só deve ser definido se o documento for criado (novo usuário)
-            // Usamos o "FieldValue.serverTimestamp()" para obter um timestamp do servidor do Firebase (melhor prática)
-            createdAt: user.metadata.creationTime ? new Date(user.metadata.creationTime).getTime() : Date.now(),
-            lastLoginAt: firebase.firestore.FieldValue.serverTimestamp()
+            // Converte as datas para UTC/ISO ao enviar para o backend
+            createdAt: timestampToISO(user.metadata.createdAt) || null,
+            lastLoginAt: timestampToISO(user.metadata.lastLoginAt) || null,
         };
 
         // Cria ou atualiza o documento.
@@ -237,12 +275,52 @@ const sendUserToFirestore = async (user) => {
         // preservando outros campos não especificados em 'userData'.
         await userDocRef.set(userData, { merge: true });
 
-        console.log('Dados do usuário persistidos com sucesso no Firestore (Coleção Users, Doc ID: ' + user.uid + ')');
+        showLogs ? console.log('Dados do usuário persistidos com sucesso no Firestore (Coleção Users, Doc ID: ' + user.uid + ')') : null;
 
     } catch (error) {
-        console.error('Erro ao persistir dados no Firestore:', error);
+        showLogs ? console.error('Erro ao persistir dados no Firestore:', error) : null;
     }
 }
+
+/**
+ * Converte um timestamp em milissegundos para o formato UTC 'YYYY-MM-DD HH:MM:SS'.
+ * A data e hora retornadas representam o momento em UTC.
+ * @param {number} timestamp_ms - O timestamp em milissegundos (ex: 1758895930030).
+ * @returns {string} A string de data/hora formatada em UTC.
+ */
+const timestampToISO = (timestamp_ms) => {
+    const date = new Date(Number(timestamp_ms));
+    const year = date.getUTCFullYear();
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+    const day = date.getUTCDate().toString().padStart(2, '0');
+    const hours = date.getUTCHours().toString().padStart(2, '0');
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+    const seconds = date.getUTCSeconds().toString().padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+
+/**
+ * Converte uma data no formato UTC para timestamp.
+ * @param {StringUTC} isoString - Uma data no formato UTC (ex: 2025-11-22 10:24:39)
+ * @returns {Number} A data convertida para timestamp.
+ */
+const isoToTimestamp = (isoString) => {
+    return new Date(isoString.replace(' ', 'T') + 'Z').getTime();
+};
+
+// Oculta o menu ao clicar em um item, em telas menores
+document.addEventListener('DOMContentLoaded', () => {
+  const navLinks = document.querySelectorAll('#mynavbar .nav-link');
+  const collapseElement = document.getElementById('mynavbar');
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      if (collapseElement.classList.contains('show')) {
+        const collapse = new bootstrap.Collapse(collapseElement);
+        collapse.hide();
+      }
+    });
+  });
+});
 
 // Listener para o estado de autenticação
 // Este listener é executado sempre que o estado do usuário (logado/deslogado) muda.
@@ -252,14 +330,14 @@ auth.onAuthStateChanged((user) => {
     // Se usuário fez login, envia dados para o backend
     if (user && apiLoginEndpoint != '') {
         if (apiLoginEndpoint == 'firebase') {
-            console.log("Persistindo no Firebase.");
+            showLogs ? console.log("Persistindo no Firebase.") : null;
             sendUserToFirestore(user);
         } else {
-            console.log("Persistindo na API.");
+            showLogs ? console.log("Persistindo na API.") : null;
             sendUserToBackend(user);
         }
     } else {
-        console.log("Persistência desligada!");
+        showLogs ? console.log("Persistência desligada!") : null;
     }
 });
 
