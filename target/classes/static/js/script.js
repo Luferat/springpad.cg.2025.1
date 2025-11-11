@@ -1,4 +1,5 @@
 /**
+ * src/main/resources/static/js/script.js
  * JavaScript do layout.
  * Template com autenticação de usuário pelo Google.
  * Referências desta página: https://firebase.google.com/docs/build?hl=pt-br
@@ -210,7 +211,7 @@ const updateUI = (user) => {
 const sendUserToBackend = async (user) => {
     const idToken = await user.getIdToken(true);
 
-    console.log(user)
+    showLogs ? console.log(user) : null;
 
     try {
         // Dados do usuário do Firebase Authentication a serem persistidos
