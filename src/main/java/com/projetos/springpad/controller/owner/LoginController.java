@@ -1,5 +1,5 @@
 /**
- * net.luferat.springpad.controller.UserAuthentication
+ * com.projetos.springpad.controller.owner.LoginController
  * Executa a persistência quando o usuário faz login.
  */
 

@@ -1,4 +1,5 @@
 /**
+ * src/main/resources/static/js/script.js
  * JavaScript do layout.
  * Template com autenticação de usuário pelo Google.
  * Referências desta página: https://firebase.google.com/docs/build?hl=pt-br

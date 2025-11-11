@@ -1,13 +1,12 @@
 /**
- * net.luferat.springpad.model.Owner
- * Model da entidade `owner`
+ * com.projetos.springpad.model.OwnerModel
+ * Repository da entidade `owner`
  */
 
 package com.projetos.springpad.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDateTime;
 
 @Data
 @Entity
