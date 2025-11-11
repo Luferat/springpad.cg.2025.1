@@ -28,8 +28,8 @@ const userClickId = 'userLoginOut';
  * - Se vazio (""), não envia os dados para a API/backend;
  * - Se "firebase", faz a persistência no projeto atual do Firebase Firestore, na coleção `Users`;
  */
-const apiLoginEndpoint = 'firebase';
-// const apiLoginEndpoint = '/owner/login'; // Exemplo
+// const apiLoginEndpoint = 'firebase';
+const apiLoginEndpoint = '/owner/login';
 // const apiLoginEndpoint = '';
 
 /**
@@ -209,6 +209,9 @@ const updateUI = (user) => {
  */
 const sendUserToBackend = async (user) => {
     const idToken = await user.getIdToken(true);
+
+    console.log(user)
+
     try {
         // Dados do usuário do Firebase Authentication a serem persistidos
         const userData = {
@@ -217,7 +220,7 @@ const sendUserToBackend = async (user) => {
             email: user.email,
             photoURL: user.photoURL,
             // Converte as datas para UTC/ISO ao enviar para o backend
-            createdAt: timestampToISO(user.metadata.creationTime),
+            createdAt: timestampToISO(user.metadata.createdAt),
             lastLoginAt: timestampToISO(user.metadata.lastLoginAt),
         };
 
@@ -239,6 +242,8 @@ const sendUserToBackend = async (user) => {
     } catch (error) {
         showLogs ? console.error('Erro ao enviar dados:', error) : null;
     }
+
+    // console.log(idToken, userData, JSON.stringify(userData), response.ok);
 };
 
 /**

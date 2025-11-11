@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "owners")
-public class Owner {
+public class OwnerModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +21,8 @@ public class Owner {
     @Column(unique = true)
     private String uid;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime lastLoginAt;
+    private String createdAt;
+    private String lastLoginAt;
     private String displayName;
     private String email;
     private String photoURL;
@@ -30,6 +30,7 @@ public class Owner {
     @Enumerated(EnumType.STRING)
     private Status status = Status.ON;
 
+    // Reservado para uso futuro
     @Column(columnDefinition = "TEXT")
     private String metadata;
 
