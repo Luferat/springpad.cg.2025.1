@@ -1,5 +1,5 @@
 /**
- * com.projetos.springpad.controller.NewController
+ * com.projetos.springpad.controller.pad.NewController
  * Rota da página de cadastro de novo pad.
  */
 
