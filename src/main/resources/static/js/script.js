@@ -41,15 +41,15 @@ const apiLoginEndpoint = '/owner/login';
  *     - Somente a rota → /user/logout ← Se o front-end está no mesmo domínio.
  * - Se vazio (""), não envia os dados para a API/backend;
  */
-// const apiLogoutEndpoint = '/user/logout'; // Exemplo
-const apiLogoutEndpoint = '';
+const apiLogoutEndpoint = '/owner/logout';
+// const apiLogoutEndpoint = '';
 
 /**
  * Configuração: mostra logs das ações no console
  *  - Se true, mostra logs
  *  - Se false, oculta logs
  */
-const showLogs = false;
+const showLogs = true;
 
 /**************************************************************************
  * Não altere nada à partir daqui a não ser que saiba o que está fazendo! *
@@ -74,41 +74,61 @@ const googleLogin = async () => {
     try {
         // Abre o popup do Google para login
         await auth.signInWithPopup(provider);
-        showLogs ? console.log('Login com Google bem-sucedido!') : null;
+        showLogs && console.log('Login com Google bem-sucedido!');
         // O estado de autenticação será atualizado pelo listener onAuthStateChanged abaixo
     } catch (error) {
-        showLogs ? console.error("Erro no login com Google:", error) : null;
+        showLogs && console.error("Erro no login com Google:", error);
         alert('Erro ao fazer login. Verifique o console para mais detalhes.');
     }
 };
 
-// Função para Logout
 const googleLogout = async () => {
     try {
-        // Limpa o estado no Firebase Authentication (do lado do cliente)
-        await auth.signOut();
+        let backendLogoutSuccess = true;
 
-        // Se configurou um endpoint de logout
-        if (apiLogoutEndpoint != "") {
+        // 1. Notificar backend (se endpoint configurado)
+        if (apiLogoutEndpoint) {
+            try {
+                const response = await fetch(apiLogoutEndpoint, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {'Content-Type': 'application/json',},
+                    body: JSON.stringify({ action: "logout" })
+                });
 
-            const response = await fetch(apiLogoutEndpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: "logout" })
-            });
+                backendLogoutSuccess = response.ok;
 
-            if (response.ok) {
-                showLogs ? console.log('Logout bem-sucedido e cookie de sessão removido!') : null;
-                // Após logout bem-sucedido, redireciona para a home
-                window.location.href = '/home';
-            } else {
-                showLogs ? console.error('Erro ao notificar o backend sobre o logout.') : null;
+                if (!response.ok) {
+                    showLogs && console.warn('Backend logout falhou, mas continuando...');
+                } else {
+                    showLogs && console.log('Cookie removido pelo backend.');
+                }
+            } catch (err) {
+                showLogs && console.warn('Erro ao comunicar com backend:', err);
+                backendLogoutSuccess = false;
             }
         }
 
+        // Logout do Firebase (independente do backend)
+        try {
+            await auth.signOut();
+            showLogs && console.log('Logout do Firebase concluído.');
+        } catch (err) {
+            showLogs && console.error('Erro ao fazer signOut no Firebase:', err);
+            return;
+        }
+
+        // 3. Redirecionar apenas se tudo (ou o essencial) deu certo
+        if (backendLogoutSuccess || !apiLogoutEndpoint) {
+            window.location.href = '/';
+        } else {
+            // Opcional: redirecionar mesmo assim, ou mostrar aviso
+            showLogs && console.error('Logout parcial: sessão local limpa, mas cookie pode persistir.', err);
+            window.location.href = '/';
+        }
+
     } catch (error) {
-        showLogs ? console.error("Erro no logout:", error) : null;
-        alert('Erro ao fazer logout. Verifique o console para mais detalhes.');
+        showLogs && console.error("Erro inesperado no logout:", error);
     }
 };
 
@@ -210,7 +230,7 @@ const updateUI = (user) => {
 const sendUserToBackend = async (user) => {
     const idToken = await user.getIdToken(true);
 
-    console.log(user)
+    showLogs && console.log(user);
 
     try {
         // Dados do usuário do Firebase Authentication a serem persistidos
@@ -235,12 +255,12 @@ const sendUserToBackend = async (user) => {
         });
 
         if (response.ok) {
-            showLogs ? console.log('Dados do usuário enviados com sucesso para o backend') : null;
+            showLogs && console.log('Dados do usuário enviados com sucesso para o backend');
         } else {
-            showLogs ? console.log('Erro ao enviar dados para o backend') : null;
+            showLogs && console.log('Erro ao enviar dados para o backend');
         }
     } catch (error) {
-        showLogs ? console.error('Erro ao enviar dados:', error) : null;
+        showLogs && console.error('Erro ao enviar dados:', error);
     }
 
     // console.log(idToken, userData, JSON.stringify(userData), response.ok);
@@ -254,7 +274,7 @@ const sendUserToFirestore = async (user) => {
     try {
         // Se a biblioteca Firestore não estiver carregada mostra erro
         if (typeof firebase.firestore !== 'function') {
-            showLogs ? console.error("Firestore não está inicializado. Certifique-se de que a biblioteca Firestore (ex: firebase-firestore.js) foi carregada.") : null;
+            showLogs && console.error("Firestore não está inicializado. Certifique-se de que a biblioteca Firestore (ex: firebase-firestore.js) foi carregada.");
             return;
         }
 
@@ -280,10 +300,10 @@ const sendUserToFirestore = async (user) => {
         // preservando outros campos não especificados em 'userData'.
         await userDocRef.set(userData, { merge: true });
 
-        showLogs ? console.log('Dados do usuário persistidos com sucesso no Firestore (Coleção Users, Doc ID: ' + user.uid + ')') : null;
+        showLogs && console.log('Dados do usuário persistidos com sucesso no Firestore (Coleção Users, Doc ID: ' + user.uid + ')');
 
     } catch (error) {
-        showLogs ? console.error('Erro ao persistir dados no Firestore:', error) : null;
+        showLogs && console.error('Erro ao persistir dados no Firestore:', error);
     }
 }
 
@@ -335,14 +355,14 @@ auth.onAuthStateChanged((user) => {
     // Se usuário fez login, envia dados para o backend
     if (user && apiLoginEndpoint != '') {
         if (apiLoginEndpoint == 'firebase') {
-            showLogs ? console.log("Persistindo no Firebase.") : null;
+            showLogs && console.log("Persistindo no Firebase.");
             sendUserToFirestore(user);
         } else {
-            showLogs ? console.log("Persistindo na API.") : null;
+            showLogs && console.log("Persistindo na API.");
             sendUserToBackend(user);
         }
     } else {
-        showLogs ? console.log("Persistência desligada!") : null;
+        showLogs && console.log("Persistência desligada!");
     }
 });
 
