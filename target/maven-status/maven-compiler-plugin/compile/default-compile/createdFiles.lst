@@ -1,0 +1,9 @@
+com\projetos\springpad\controller\AboutController.class
+com\projetos\springpad\controller\owner\LoginController.class
+com\projetos\springpad\controller\NewController.class
+com\projetos\springpad\controller\HomeController.class
+com\projetos\springpad\repository\OwnerRepository.class
+com\projetos\springpad\controller\pad\NewController.class
+com\projetos\springpad\model\OwnerModel.class
+com\projetos\springpad\model\OwnerModel$Status.class
+com\projetos\springpad\SpringpadApplication.class

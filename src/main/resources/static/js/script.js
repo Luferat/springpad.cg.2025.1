@@ -42,15 +42,15 @@ const apiLoginEndpoint = '/owner/login';
  *     - Somente a rota → /user/logout ← Se o front-end está no mesmo domínio.
  * - Se vazio (""), não envia os dados para a API/backend;
  */
-// const apiLogoutEndpoint = '/user/logout'; // Exemplo
-const apiLogoutEndpoint = '';
+const apiLogoutEndpoint = '/owner/logout';
+// const apiLogoutEndpoint = '';
 
 /**
  * Configuração: mostra logs das ações no console
  *  - Se true, mostra logs
  *  - Se false, oculta logs
  */
-const showLogs = false;
+const showLogs = true;
 
 /**************************************************************************
  * Não altere nada à partir daqui a não ser que saiba o que está fazendo! *
