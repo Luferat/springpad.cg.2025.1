@@ -1,5 +1,5 @@
 /**
- * net.luferat.springpad.repository.OwnerRepository
+ * com.projetos.springpad.repository.OwnerRepository
  * Repository da entidade `owner`.
  */
 
