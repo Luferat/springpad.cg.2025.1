@@ -16,6 +16,8 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
 
+        // Obter a lista de pads ativos ordenados pela createdAt mais recente com content resumido.
+
         model.addAttribute("title", "Título da página");
 
         return "home"; // home.html
