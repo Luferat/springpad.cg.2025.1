@@ -22,9 +22,6 @@ public class HomeController {
     @Autowired
     private PadsRepository padsRepository;
 
-    private static final DateTimeFormatter FORMATTER =
-            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-
     @GetMapping("/")
     public String home(Model model) {
         // Busca resumos com status ON, ordenados por createdAt DESC
