@@ -1,0 +1,36 @@
+<#--
+src/main/resources/templates/pad/view.html
+Página da rota "/view/{pad.id}" que exibe o pad selecionado em detalhes.
+-->
+
+<#include "../layouts/header.html">
+
+<h2>${title}</h2>
+
+<div>
+    <p>${pad.content}</p> <#-- Conteúdo completo -->
+    <p>Criado:
+    <ul>
+        <li>Em: ${formattedCreatedAt}</li>
+        <li>Por:
+            <#if pad.ownerModel??>
+            <a href="/owner/${pad.ownerModel.id}" title="Clique para ver detalhes de '${pad.ownerModel.displayName}'...">
+                <img src="${pad.ownerModel.photoURL}" alt="Foto" class="rounded-circle" width="25" referrerpolicy="no-referrer">
+                ${pad.ownerModel.displayName!"Anônimo"}
+            </a>
+            <#else>
+            Anônimo
+        </#if></li>
+    </ul>
+</div>
+
+<div>
+    <a href="/" class="btn btn-primary btn-sm">Voltar para Início</a>
+    <#-- Exibe os botões somente se está logado e é proprietário do pad -->
+    <#if isOwner>
+    <a href="/edit/${pad.id}" class="btn btn-warning btn-sm">Editar</a>
+    <a href="/delete/${pad.id}" class="btn btn-danger btn-sm">Apagar</a>
+</#if>
+</div>
+
+<#include "../layouts/footer.html">
