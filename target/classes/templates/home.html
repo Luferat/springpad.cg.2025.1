@@ -5,8 +5,73 @@ Página da rota "/", a página inicial do site.
 
 <#include "layouts/header.html">
 
-<#-- isso é um comentário -->
-<h2>${title}</h2>
-<p>Lorem ipsum</p>
+<div class="container py-4">
+    <h2 class="mb-4">${title}</h2>
+
+    <#-- Se não houver pads ainda -->
+    <#if !pads?? || pads?size == 0>
+    <div class="text-center py-5">
+        <p class="lead text-muted">Nenhum pad publicado ainda.</p>
+        <a href="/pad/novo" class="btn btn-primary btn-lg">Criar o primeiro Pad</a>
+    </div>
+    <#else>
+    <!-- Grid responsivo de cards -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+        <#list pads as pad>
+        <div class="col">
+            <div class="card h-100 shadow-sm hover-shadow transition">
+                <!-- Cabeçalho do card com foto do autor e nome -->
+                <div class="card-header bg-transparent border-0 pb-0">
+                    <h5 class="card-title mb-2">
+                        <a href="/ver/${pad.id}"
+                           class="text-decoration-none text-dark stretched-link"
+                           title="Ver detalhes de ${pad.title}">
+                            ${pad.title}
+                        </a>
+                    </h5>
+                </div>
+
+                <!-- Corpo do card -->
+                <div class="card-body d-flex flex-column">
+
+                    <p class="card-text text-muted flex-grow-1">
+                        <#if pad.contentSummary?? && pad.contentSummary?has_content>
+                        ${pad.contentSummary}...
+                        <#else>
+                        <em>Sem conteúdo</em>
+                    </#if>
+                    </p>
+                </div>
+
+                <!-- Rodapé do card (opcional: ações futuras) -->
+                <div class="card-footer bg-transparent border-0 pt-0">
+                    <div class="d-flex align-items-center">
+                        <img src="${pad.ownerPhotoURL}"
+                             alt="Foto de ${pad.ownerDisplayName}"
+                             class="rounded-circle me-2"
+                             width="40"
+                             height="40"
+                             referrerpolicy="no-referrer">
+                        <div>
+                            <strong>${pad.ownerDisplayName}</strong><br>
+                            <small class="text-muted">
+                                ${pad.createdAtFormatted}
+                            </small>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</#list>
+</div>
+</#if>
+</div>
+
+<#-- Feedback de sucesso (cadastro, edição, exclusão etc.) -->
+<#if successMessage??>
+<script>
+    alert("${successMessage}");
+</script>
+</#if>
 
 <#include "layouts/footer.html">

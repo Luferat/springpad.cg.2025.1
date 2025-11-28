@@ -1,6 +1,6 @@
 /**
  * com.projetos.springpad.model.OwnerModel
- * Repository da entidade `owner`
+ * Model da entidade `owner`
  */
 
 package com.projetos.springpad.model;
