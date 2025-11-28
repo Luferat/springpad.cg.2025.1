@@ -5,7 +5,7 @@
 
 package com.projetos.springpad.controller;
 
-import com.projetos.springpad.dto.PadSummaryDTO;
+import com.projetos.springpad.dto.PadDTO;
 import com.projetos.springpad.model.PadsModel;
 import com.projetos.springpad.repository.PadsRepository;
 import jakarta.servlet.http.HttpSession;
@@ -25,7 +25,7 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model, HttpSession session) {
         // Busca resumos com status ON, ordenados por createdAt DESC
-        List<PadSummaryDTO> padsSummaries = padsRepository.findSummariesByStatusOrderByCreatedAtDesc(PadsModel.Status.ON);
+        List<PadDTO> padsSummaries = padsRepository.findSummariesByStatusOrderByCreatedAtDesc(PadsModel.Status.ON);
 
         model.addAttribute("pads", padsSummaries);
         model.addAttribute("title", "Página Inicial");
