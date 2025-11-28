@@ -1,5 +1,5 @@
 /**
- * com.projetos.springpad.dto.PadDTO
+ * com.projetos.springpad.dto.PadSummaryDTO
  * Data Transfer Objects para os "pads"
  */
 
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Value // Lombok para gerar construtor, getters, etc.
-public class PadDTO {
+public class PadSummaryDTO {
     Long id;
     String title;
     LocalDateTime createdAt;
