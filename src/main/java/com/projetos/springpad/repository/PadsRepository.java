@@ -5,7 +5,7 @@
 
 package com.projetos.springpad.repository;
 
-import com.projetos.springpad.dto.PadSummaryDTO;
+import com.projetos.springpad.dto.PadDTO;
 import com.projetos.springpad.model.PadsModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,7 +24,7 @@ public interface PadsRepository extends JpaRepository<PadsModel, Long> {
             "FROM PadsModel p LEFT JOIN p.ownerModel o " +
             "WHERE p.status = :status " +
             "ORDER BY p.createdAt DESC")
-    List<PadSummaryDTO> findSummariesByStatusOrderByCreatedAtDesc(PadsModel.Status status);
+    List<PadDTO> findSummariesByStatusOrderByCreatedAtDesc(PadsModel.Status status);
 
     // Obtém os dados do Pad com o Owner
     @Query("SELECT p FROM PadsModel p LEFT JOIN FETCH p.ownerModel WHERE p.id = :id")
