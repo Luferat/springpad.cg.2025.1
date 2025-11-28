@@ -27,7 +27,6 @@ Página da rota "/view/{pad.id}" que exibe o pad selecionado em detalhes.
 <div>
     <a href="/" class="btn btn-primary btn-sm">Voltar para Início</a>
     <#-- Exibe os botões somente se está logado e é proprietário do pad -->
-    <!-- Comentando em HTML -->
     <#if isOwner>
     <a href="/edit/${pad.id}" class="btn btn-warning btn-sm">Editar</a>
     <a href="/delete/${pad.id}" class="btn btn-danger btn-sm">Apagar</a>
