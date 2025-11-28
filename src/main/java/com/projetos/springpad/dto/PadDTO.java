@@ -1,5 +1,5 @@
 /**
- * com.projetos.springpad.dto.PadSummaryDTO
+ * com.projetos.springpad.dto.PadDTO
  * Data Transfer Objects para os "pads"
  */
 
