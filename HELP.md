@@ -1,7 +1,7 @@
 # Consertando a data na `home.html`
 
-- Renomeie `com.projetos.springpad.dto.PadSummaryDTO` para `com.projetos.springpad.dto.PadDTO`
-- Ajuste `com.projetos.springpad.dto.PadDTO` criando o método `getCreatedAtFormatted()`
+- Renomeie `com.projetos.springpad.dto.PadSummaryDTO` para `com.projetos.springpad.dto.PadSummaryDTO`
+- Ajuste `com.projetos.springpad.dto.PadSummaryDTO` criando o método `getCreatedAtFormatted()`
 - Ajuste `src/main/resources/templates/home.html` exibindo `Em ${pad.createdAtFormatted}` no lugar da data
 
 # Formatando `view.html` com Bootstrap
