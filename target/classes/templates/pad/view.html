@@ -1,36 +1,30 @@
 <#--
 src/main/resources/templates/pad/view.html
-Página da rota "/view/{pad.id}" que exibe o pad selecionado em detalhes.
+Página da rota "/ver/{pad.id}" que exibe o pad selecionado em detalhes.
 -->
 
 <#include "../layouts/header.html">
 
-<h2>${title}</h2>
+<div class="d-flex mt-3 flex-column flex-grow-1">
 
-<div>
-    <p>${pad.content}</p> <#-- Conteúdo completo -->
-    <p>Criado:
-    <ul>
-        <li>Em: ${formattedCreatedAt}</li>
-        <li>Por:
-            <#if pad.ownerModel??>
-            <a href="/owner/${pad.ownerModel.id}" title="Clique para ver detalhes de '${pad.ownerModel.displayName}'...">
-                <img src="${pad.ownerModel.photoURL}" alt="Foto" class="rounded-circle" width="25" referrerpolicy="no-referrer">
-                ${pad.ownerModel.displayName!"Anônimo"}
-            </a>
-            <#else>
-            Anônimo
-        </#if></li>
-    </ul>
-</div>
-
-<div>
-    <a href="/" class="btn btn-primary btn-sm">Voltar para Início</a>
-    <#-- Exibe os botões somente se está logado e é proprietário do pad -->
-    <#if isOwner>
-    <a href="/edit/${pad.id}" class="btn btn-warning btn-sm">Editar</a>
-    <a href="/delete/${pad.id}" class="btn btn-danger btn-sm">Apagar</a>
-</#if>
+    <h4 class="mb-3">${title}</h4>
+    <textarea class="form-control flex-grow-1 font-monospace" readonly>${pad.content}</textarea>
+    <div class="mt-2 d-flex flex-column flex-sm-row justify-content-between align-items-center">
+        <small class="text-muted d-flex align-items-center gap-2">
+            <img src="${pad.ownerModel.photoURL}" alt="${pad.ownerModel.displayName!"Anônimo"}" class="rounded-circle" width="64" height="64" referrerpolicy="no-referrer">
+            <span>
+        Por <strong><a href="/owner/${pad.ownerModel.id}">${pad.ownerModel.displayName!"Anônimo"}</a></strong><br>
+        Em <em>${formattedCreatedAt}</em>
+      </span>
+        </small>
+        <div class="text-center text-sm-end mt-2 mt-sm-0">
+            <a href="/" class="btn btn-primary btn-sm">Início</a>
+            <#if isOwner>
+                <a href="/edita/${pad.id}" class="btn btn-warning btn-sm ms-auto">Editar</a>
+                <a href="/apaga/${pad.id}" class="btn btn-danger btn-sm" onclick='return confirm(`Tem certeza que deseja apagar "${title}" permanentemente?`);'>Apagar</a>
+            </#if>
+        </div>
+    </div>
 </div>
 
 <#include "../layouts/footer.html">
