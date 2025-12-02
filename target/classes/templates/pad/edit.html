@@ -1,0 +1,20 @@
+<#--
+src/main/resources/templates/pad/edit.html
+Página da rota "/edit/{pad.id}" que exibe o pad selecionado permitindo editá-lo.
+-->
+
+<#include "../layouts/header.html">
+
+<form action="/edita/${pad.id}" method="post" class="d-flex flex-column flex-grow-1">
+    <input type="text" name="padtitle" class="form-control fs-4" tabindex="0"
+           value="${pad.title}" required minlength="4">
+
+    <textarea name="padcontent" class="form-control pad-content flex-grow-1 mt-1"
+              required minlength="4">${pad.content}</textarea>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-warning">Salvar</button>
+    </div>
+</form>
+
+<#include "../layouts/footer.html">
