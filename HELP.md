@@ -8,8 +8,6 @@ Se não é o proprietário ou o "pad" não existe, redireciona para "/".
 
 Se apagou, redireciona para "/" com uma mensagem de sucesso.
 
- - [ ] Crie `com.projetos.springpad.controller.pad.DeleteController`
- - [ ] Ajuste `com.projetos.springpad.controller.HomeController`
-
-
+ - [ ] Crie [`com.projetos.springpad.controller.pad.DeleteController`](#file-deletecontroller-java)
+ - [ ] Adicione o atributo `HttpSession session` no método `home` de [`com.projetos.springpad.controller.HomeController`](#file-homecontroller-java)
 
