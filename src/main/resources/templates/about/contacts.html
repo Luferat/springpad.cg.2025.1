@@ -8,4 +8,34 @@ Página da rota "/sobre/contatos".
 <h2>Faça Contato</h2>
 <p>Preencha o formulário para entrar em contato conosco.</p>
 
+<form action="/sobre/contatos" method="post" name="contactform" class="was-validated w-50 w-md-100 m-auto">
+
+    <div class="mb-3 mt-3">
+        <label for="name" class="form-label">Nome:</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Seu nome completo / Social" required minlength="2" value="${form.name!}">
+        <div class="invalid-feedback">Preencha seu nome.</div>
+    </div>
+
+    <div class="mb-3">
+        <label for="email" class="form-label">E-mail:</label>
+        <input type="email" class="form-control" id="email" placeholder="Seu e-mail." name="email" required value="${form.email!}">
+        <div class="invalid-feedback">Informe um e-mail válido.</div>
+    </div>
+
+    <div class="mb-3">
+        <label for="subject" class="form-label">Assunto:</label>
+        <input type="text" class="form-control" id="subject" name="subject" placeholder="Assunto do contato." required minlength="3" value="${form.subject!}">
+        <div class="invalid-feedback">Preencha o assunto.</div>
+    </div>
+
+    <div class="mb-3">
+        <label for="message" class="form-label">Mensagem:</label>
+        <textarea class="form-control" id="message" name="message" placeholder="Descreva os detalhes do contato." required minlength="4" rows="5">${form.message!}</textarea>
+        <div class="invalid-feedback">Preencha a mensagem.</div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enviar</button>
+
+</form>
+
 <#include "../layouts/footer.html">
