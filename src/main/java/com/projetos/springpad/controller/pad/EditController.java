@@ -4,7 +4,6 @@
 
 package com.projetos.springpad.controller.pad;
 
-import com.projetos.springpad.model.OwnerModel;
 import com.projetos.springpad.model.PadsModel;
 import com.projetos.springpad.repository.OwnerRepository;
 import com.projetos.springpad.repository.PadsRepository;
@@ -98,11 +97,16 @@ public class EditController {
         pad.setContent(sanitizedContent);
         padsRepository.save(pad);
 
+        /*
         // Cria mensagem de confirmação
         redirectAttributes.addFlashAttribute(
                 "successMessage",
                 sanitizedTitle + " atualizado com sucesso!"
         );
+        */
+
+        redirectAttributes.addFlashAttribute("flashMessage", sanitizedTitle + " atualizado com sucesso!");
+        redirectAttributes.addFlashAttribute("flashStyle", "success");  // success, danger, warning, info etc.
 
         // Redireciona para a visão d pad editado
         return "redirect:/ver/" + id;

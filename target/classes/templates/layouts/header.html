@@ -14,7 +14,8 @@ Inclua no começo de cada página com:
     <#-- Injeta Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css">
     <#-- Injeta ícones do Bootstrap -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.13.1/font/bootstrap-icons.min.css">
     <#-- Injeta as folhas de estilo CSS do template -->
     <link rel="stylesheet" href="/css/style.css">
     <link rel="shortcut icon" href="/img/favicon.png" type="image/png">
@@ -44,7 +45,8 @@ Inclua no começo de cada página com:
 
                 <#-- Menu dropdown em "Sobre" -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#Sobre" role="button" data-bs-toggle="dropdown">Sobre...</a>
+                    <a class="nav-link dropdown-toggle" href="#Sobre" role="button"
+                       data-bs-toggle="dropdown">Sobre...</a>
                     <ul class="dropdown-menu mb-2">
                         <li><a class="dropdown-item" href="/sobre/site">Sobre o Site</a></li>
                         <li><a class="dropdown-item" href="/sobre/quemsomos">Quem somos</a></li>
@@ -68,10 +70,11 @@ Inclua no começo de cada página com:
                 </ul>
 
                 <#-- Formulário de pesquisa -->
-                <form class="d-flex p-1">
+                <form class="d-flex p-1" method="get" action="/procurar" name="templatesearch">
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Procurar...">
-                        <button class="btn btn-light" type="button"><i class="bi bi-search"></i></button>
+                        <input class="form-control" type="search" name="q" placeholder="Procurar nos Pads..." required
+                               minlength="2" value="${query!}">
+                        <button class="btn btn-light" type="submit"><i class="bi bi-search"></i></button>
                     </div>
                 </form>
 
@@ -82,5 +85,14 @@ Inclua no começo de cada página com:
 <a></a>
 <main class="container mt-5 p-4 bg-white d-flex flex-column flex-grow-1">
 
-    <#-- Rack para funcionar o #top -->
-    <div id="top" style="position: relative; height: .1rem;"></div>
+<#if flashMessage??>
+
+    <div class="alert alert-${flashStyle!} alert-dismissible" id="baseMainAlert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        ${flashMessage}
+    </div>
+
+</#if>
+
+<#-- Rack para funcionar o #top -->
+<div id="top" style="position: relative; height: .1rem;"></div>

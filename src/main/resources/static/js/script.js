@@ -50,7 +50,7 @@ const apiLogoutEndpoint = '/owner/logout';
  *  - Se true, mostra logs
  *  - Se false, oculta logs
  */
-const showLogs = true;
+const showLogs = false;
 
 /**************************************************************************
  * Não altere nada à partir daqui a não ser que saiba o que está fazendo! *
@@ -369,3 +369,18 @@ auth.onAuthStateChanged((user) => {
 
 // Adiciona o Event Listener ao elemento `userInOut`
 userInOut.addEventListener('click', handleUserInOutClick);
+
+// Fecha caixas de alerta após 5 segundos
+const delayInMilliseconds = 5000;
+document.addEventListener('DOMContentLoaded', function () {
+    const alertElement = document.getElementById('baseMainAlert');
+    if (alertElement) {
+        const bsAlert = new bootstrap.Alert(alertElement);
+        setTimeout(function () { bsAlert.close(); }, delayInMilliseconds);
+    }
+});
+
+// Bloqueia reenvio do formulário ao atualizar a página
+if (window.history.replaceState) {
+    window.history.replaceState(null, null, window.location.href);
+}

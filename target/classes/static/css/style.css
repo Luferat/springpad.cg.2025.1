@@ -55,3 +55,10 @@ footer a:hover {
 .pad-content {
     font-family: consolas, monospace;
 }
+
+/* Nas larguras menores que 768px → md (middle) */
+@media screen and (max-width: 768px) {
+    .w-md-100 {
+        width: 100% !important;
+    }
+}

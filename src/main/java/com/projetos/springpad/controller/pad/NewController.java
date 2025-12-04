@@ -91,7 +91,8 @@ public class NewController {
 
         // Prepara a mensagem de feedback com o título do pad
         // Adiciona como flash attribute para ser exibida na home
-        redirectAttributes.addFlashAttribute("successMessage", sanitizedTitle + " cadastrado com sucesso!");
+        redirectAttributes.addFlashAttribute("flashMessage", sanitizedTitle + " cadastrado com sucesso!");
+        redirectAttributes.addFlashAttribute("flashStyle", "success");  // success, danger, warning, info etc.
 
         // Redireciona para a página inicial
         return "redirect:/";

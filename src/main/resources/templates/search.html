@@ -1,28 +1,39 @@
 <#--
-src/main/resources/templates/home.html
-Página da rota "/", a página inicial do site.
+src/main/resources/templates/search.html
+Página de pesquisa na rota '/pesquisar'
 -->
 
 <#include "layouts/header.html">
 
-<div class="container py-4">
-    <h2 class="mb-4">${title}</h2>
+<h2 class="mt-2">Pesquisando por "${query!}"...</h2>
 
-    <#-- Se não houver pads ainda -->
-    <#if !pads?? || pads?size == 0>
+<div>
 
-    <div class="text-center py-5">
-        <p class="lead text-muted">Nenhum pad publicado ainda.</p>
-        <a href="/pad/novo" class="btn btn-primary btn-lg">Criar o primeiro Pad</a>
-    </div>
+    <form class="d-flex p-1 w-50 w-md-100 mt-4 mb-4 m-auto" method="get" action="/procurar" name="pagesearch">
+        <div class="input-group">
+            <input class="form-control" type="search" name="q" placeholder="Procurar nos Pads..." required minlength="2" value="${query!}">
+            <button class="btn btn-light" type="submit"><i class="bi bi-search"></i></button>
+        </div>
+    </form>
 
-    <#else>
+</div>
 
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+<#if total == 0>
+    <h3>Não achei nada!</h3>
+<#elseif total == 1>
+    <h3>1 Pad encontrado:</h3>
+<#else>
+    <h3>${ total } Pads encotrados:</h3>
+</#if>
+
+<div>
+
+    <!-- Grid responsivo de cards -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4 mt-2">
         <#list pads as pad>
         <div class="col">
             <div class="card h-100 shadow-sm hover-shadow transition">
-
+                <!-- Cabeçalho do card com foto do autor e nome -->
                 <div class="card-header bg-transparent border-0 pb-0">
                     <h5 class="card-title mb-2">
                         <a href="/ver/${pad.id}"
@@ -38,10 +49,10 @@ Página da rota "/", a página inicial do site.
 
                     <p class="card-text text-muted flex-grow-1">
                         <#if pad.contentSummary?? && pad.contentSummary?has_content>
-                            ${pad.contentSummary}...
+                        ${pad.contentSummary}...
                         <#else>
-                            <em>Sem conteúdo</em>
-                        </#if>
+                        <em>Sem conteúdo</em>
+                    </#if>
                     </p>
                 </div>
 
@@ -56,15 +67,17 @@ Página da rota "/", a página inicial do site.
                              referrerpolicy="no-referrer">
                         <div>
                             <strong>${pad.ownerDisplayName}</strong><br>
-                            <small class="text-muted">${pad.createdAtFormatted}</small>
+                            <small class="text-muted">
+                                ${pad.createdAtFormatted}
+                            </small>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
-    </div>
-</#list>
+    </#list>
 </div>
-</#if>
+
 </div>
 
 <#include "layouts/footer.html">

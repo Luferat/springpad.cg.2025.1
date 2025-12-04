@@ -59,10 +59,9 @@ public class DeleteController {
         pad.setStatus(PadsModel.Status.DEL);
         padsRepository.save(pad);
 
-        // Monta a mensagem "flash"
-        redirectAttributes.addFlashAttribute(
-                "successMessage", pad.getTitle() + " excluído com sucesso!"
-        );
+        // Monta mensagem de confirmação
+        redirectAttributes.addFlashAttribute("flashMessage", pad.getTitle() + " excluído com sucesso!");
+        redirectAttributes.addFlashAttribute("flashStyle", "success");  // success, danger, warning, info etc.
 
         // Redireciona para a página inicial
         return "redirect:/";

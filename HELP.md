@@ -1,6 +1,6 @@
-# Pads
+# Pesquisa
 
-## `fakepads.sql`
-
-Script SQL que cadastra 10 "pads" fake para os testes iniciais
+- [ ] Atualizar `com.projetos.springpad.repository.PadsRepository`
+- [ ] Criar `com.projetos.springpad.controller.SearchController`
+- [ ] Criar `src/main/resources/templates/search.html`
 
