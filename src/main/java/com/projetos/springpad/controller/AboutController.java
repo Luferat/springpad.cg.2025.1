@@ -6,7 +6,6 @@
 package com.projetos.springpad.controller;
 
 import com.projetos.springpad.model.OwnerModel;
-import com.projetos.springpad.model.PadsModel;
 import com.projetos.springpad.repository.OwnerRepository;
 import com.projetos.springpad.repository.PadsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +23,10 @@ import java.util.Optional;
 @RequestMapping("/sobre") // Endereço base das rotas de "Sobre"
 public class AboutController {
 
-    private final PadsRepository padsRepository;
     private final OwnerRepository ownerRepository;
 
     @Autowired
-    public AboutController(PadsRepository padsRepository, OwnerRepository ownerRepository) {
-        this.padsRepository = padsRepository;
+    public AboutController(OwnerRepository ownerRepository) {
         this.ownerRepository = ownerRepository;
     }
 
