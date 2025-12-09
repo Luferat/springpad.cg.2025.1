@@ -5,6 +5,7 @@
 
 package com.projetos.springpad.controller;
 
+import com.projetos.springpad.model.OwnerModel;
 import com.projetos.springpad.model.PadsModel;
 import com.projetos.springpad.repository.OwnerRepository;
 import com.projetos.springpad.repository.PadsRepository;
@@ -43,11 +44,21 @@ public class AboutController {
             @CookieValue(value = "owner_uid", required = false) String ownerUid
     ) {
 
+        String ownName = "";
+        String ownEmail = "";
+
+        // Se o usuário está logado, já preenche os campos "Nome" e "E-mail"
+        if (ownerUid != null &&  !ownerUid.isEmpty()) {
+            Optional<OwnerModel> optionalOwner = ownerRepository.findByUid(ownerUid);
+            ownName = optionalOwner.get().getDisplayName();
+            ownEmail = optionalOwner.get().getEmail();
+        }
+
         Map<String, String> form = new HashMap<>();
-        form.put("name", "Joca da Silva");
-        form.put("email", "joca@email.com");
-        form.put("subject", "Assunto do Joca.");
-        form.put("message", "Mensagem do Joca.\nMensagem do Joca.\nMensagem do Joca.\nMensagem do Joca.\n");
+        form.put("name", ownName);
+        form.put("email", ownEmail);
+        form.put("subject", "");
+        form.put("message", "");
 
         model.addAttribute("form", form);
 
